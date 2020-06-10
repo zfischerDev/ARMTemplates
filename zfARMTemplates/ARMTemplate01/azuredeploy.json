@@ -15,7 +15,7 @@
     }
   },
   "variables": {
-    "storageAccountName": "[concat(uniqueString(resourceGroup().id),'zfstorageacct')]"
+    "storageAccountName": "[concat(uniqueString(resourceGroup().id),'zfstr')]"
   },
   "resources": [
     {
