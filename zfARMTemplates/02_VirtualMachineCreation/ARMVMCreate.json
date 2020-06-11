@@ -22,7 +22,7 @@
             "metadata": {
                 "description": "Username for the Virtual Machine."
             },
-            "defaultValue": "admin"
+            "defaultValue": "vmadmin01"
         },
         "adminPassword": {
             "type": "securestring",
