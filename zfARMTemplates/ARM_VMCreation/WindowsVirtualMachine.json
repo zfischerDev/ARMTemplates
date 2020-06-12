@@ -48,7 +48,7 @@
     "publicIPAddressType": "Dynamic",
     "vhdStorageContainerName": "vhds",
     "vmName": "MyWindowsVM",
-    "vmSize": "Standard_A2",
+    "vmSize": "Standard_B2s",
     "virtualNetworkName": "MyVNET",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('subnetName'))]",
