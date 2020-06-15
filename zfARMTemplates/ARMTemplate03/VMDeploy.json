@@ -26,13 +26,20 @@
     },
     "zfvm01WindowsOSVersion": {
       "type": "string",
-      "defaultValue": "2012-R2-Datacenter",
+      "defaultValue": "2019-Datacenter",
       "allowedValues": [
         "2008-R2-SP1",
         "2012-Datacenter",
         "2012-R2-Datacenter",
-        "Windows-Server-Technical-Preview"
+        "2016-Nano-Server",
+        "2016-Datacenter-with-Containers",
+        "2016-Datacenter",
+        "2019-Datacenter"
       ]
+    },
+    "zfvm01pubipDnsName": {
+      "type": "string",
+      "minLength": 1
     }},
   "variables": {
     "zfteststrgName": "[concat('zfteststrg', uniqueString(resourceGroup().id))]",
@@ -48,7 +55,8 @@
     "zfvm01VnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'zfvnetwrk')]",
     "zfvm01SubnetRef": "[concat(variables('zfvm01VnetID'), '/subnets/', variables('zfvnetwrkSubnet1Name'))]",
     "zfvm01StorageAccountContainerName": "vhds",
-    "zfvm01NicName": "[concat(parameters('zfvm01Name'), 'NetworkInterface')]"},
+    "zfvm01NicName": "[concat(parameters('zfvm01Name'), 'NetworkInterface')]",
+    "zfvm01pubipName": "zfvm01pubip"},
   "resources": [
     {
       "name": "[variables('zfteststrgName')]",
@@ -101,7 +109,8 @@
       "location": "[resourceGroup().location]",
       "apiVersion": "2016-03-30",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualNetworks', 'zfvnetwrk')]"
+        "[resourceId('Microsoft.Network/virtualNetworks', 'zfvnetwrk')]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('zfvm01pubipName'))]"
       ],
       "tags": {
         "displayName": "zfvm01Nic"
@@ -114,6 +123,9 @@
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[variables('zfvm01SubnetRef')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('zfvm01pubipName'))]"
               }
             }
           }
@@ -163,6 +175,22 @@
               "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('zfvm01NicName'))]"
             }
           ]
+        }
+      }
+    },
+    {
+      "name": "[variables('zfvm01pubipName')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "zfvm01pubip"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('zfvm01pubipDnsName')]"
         }
       }
     }],
