@@ -1,0 +1,170 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "zfstor01Type": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_ZRS",
+        "Standard_GRS",
+        "Standard_RAGRS",
+        "Premium_LRS"
+      ]
+    },
+    "myvm01Name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "myvm01AdminUserName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "myvm01AdminPassword": {
+      "type": "securestring"
+    },
+    "myvm01WindowsOSVersion": {
+      "type": "string",
+      "defaultValue": "2012-R2-Datacenter",
+      "allowedValues": [
+        "2008-R2-SP1",
+        "2012-Datacenter",
+        "2012-R2-Datacenter",
+        "Windows-Server-Technical-Preview"
+      ]
+    }},
+  "variables": {
+    "zfstor01Name": "[concat('zfstor01', uniqueString(resourceGroup().id))]",
+    "sub01Prefix": "10.0.0.0/16",
+    "sub01Subnet1Name": "Subnet-1",
+    "sub01Subnet1Prefix": "10.0.0.0/24",
+    "sub01Subnet2Name": "Subnet-2",
+    "sub01Subnet2Prefix": "10.0.1.0/24",
+    "myvm01ImagePublisher": "MicrosoftWindowsServer",
+    "myvm01ImageOffer": "WindowsServer",
+    "myvm01OSDiskName": "myvm01OSDisk",
+    "myvm01VmSize": "Standard_D2_v2",
+    "myvm01VnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'sub01')]",
+    "myvm01SubnetRef": "[concat(variables('myvm01VnetID'), '/subnets/', variables('sub01Subnet1Name'))]",
+    "myvm01StorageAccountContainerName": "vhds",
+    "myvm01NicName": "[concat(parameters('myvm01Name'), 'NetworkInterface')]"},
+  "resources": [
+    {
+      "name": "[variables('zfstor01Name')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-01-01",
+      "sku": {
+        "name": "[parameters('zfstor01Type')]"
+      },
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "zfstor01"
+      },
+      "kind": "Storage"
+    },
+    {
+      "name": "sub01",
+      "type": "Microsoft.Network/virtualNetworks",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "sub01"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('sub01Prefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('sub01Subnet1Name')]",
+            "properties": {
+              "addressPrefix": "[variables('sub01Subnet1Prefix')]"
+            }
+          },
+          {
+            "name": "[variables('sub01Subnet2Name')]",
+            "properties": {
+              "addressPrefix": "[variables('sub01Subnet2Prefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('myvm01NicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'sub01')]"
+      ],
+      "tags": {
+        "displayName": "myvm01Nic"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('myvm01SubnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[parameters('myvm01Name')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-06-15",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('zfstor01Name'))]",
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('myvm01NicName'))]"
+      ],
+      "tags": {
+        "displayName": "myvm01"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('myvm01VmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('myvm01Name')]",
+          "adminUsername": "[parameters('myvm01AdminUsername')]",
+          "adminPassword": "[parameters('myvm01AdminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('myvm01ImagePublisher')]",
+            "offer": "[variables('myvm01ImageOffer')]",
+            "sku": "[parameters('myvm01WindowsOSVersion')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "myvm01OSDisk",
+            "vhd": {
+              "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('zfstor01Name')), '2016-01-01').primaryEndpoints.blob, variables('myvm01StorageAccountContainerName'), '/', variables('myvm01OSDiskName'), '.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('myvm01NicName'))]"
+            }
+          ]
+        }
+      }
+    }],
+  "outputs": {}
+}

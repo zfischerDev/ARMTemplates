@@ -9,6 +9,8 @@ Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "02_VirtualMachineCreation",
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ARM_VMCreation", "ARM_VMCreation\ARM_VMCreation.deployproj", "{72FD651F-5DED-46D5-8D47-419AA7747778}"
 EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ARMTemplate02", "ARMTemplate02\ARMTemplate02.deployproj", "{2D24E90D-790B-4172-BB6D-D0B2E1AE5623}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{72FD651F-5DED-46D5-8D47-419AA7747778}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72FD651F-5DED-46D5-8D47-419AA7747778}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72FD651F-5DED-46D5-8D47-419AA7747778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D24E90D-790B-4172-BB6D-D0B2E1AE5623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D24E90D-790B-4172-BB6D-D0B2E1AE5623}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D24E90D-790B-4172-BB6D-D0B2E1AE5623}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D24E90D-790B-4172-BB6D-D0B2E1AE5623}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
