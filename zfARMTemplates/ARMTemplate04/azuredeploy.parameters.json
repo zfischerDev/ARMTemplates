@@ -5,8 +5,7 @@
     "zfazurevm01AdminUserName": 
     {
       "value": "tfischer"
-    }
-  },
+    },
   "zfazurevm01AdminPassword": {
     "reference": {
       "keyVault": {
