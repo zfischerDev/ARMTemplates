@@ -24,7 +24,7 @@
     "zfvm01AdminPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "Password for the Virtual Machine."
+        "description": "The Password for the Virtual Machine."
       }
     },
     "zfvm01WindowsOSVersion": {
