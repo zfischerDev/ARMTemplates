@@ -22,11 +22,9 @@
       "minLength": 1
     },
     "zfvm01AdminPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/fd345958-eeb0-4c50-b589-28e0a8f886f0/resourceGroups/zfPremGlobal/providers/Microsoft.KeyVault/vaults/zfPremKVault"
-        },
-        "secretName": "vmAdminPassword"
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the Virtual Machine."
       }
     },
     "zfvm01WindowsOSVersion": {
