@@ -3,16 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ARMTemplate01", "ARMTemplate01\ARMTemplate01.deployproj", "{5755AC75-0BC7-4AA2-9068-A23115A02C8B}"
-EndProject
-Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "02_VirtualMachineCreation", "02_VirtualMachineCreation\02_VirtualMachineCreation.deployproj", "{10B60B19-6412-415B-8F57-29032C069360}"
-EndProject
-Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ARM_VMCreation", "ARM_VMCreation\ARM_VMCreation.deployproj", "{72FD651F-5DED-46D5-8D47-419AA7747778}"
-EndProject
-Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ARMTemplate02", "ARMTemplate02\ARMTemplate02.deployproj", "{2D24E90D-790B-4172-BB6D-D0B2E1AE5623}"
-EndProject
-Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ARMTemplate03", "ARMTemplate03\ARMTemplate03.deployproj", "{600B4CB1-CF98-408D-BB0F-6388A44C87B7}"
-EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ARMTemplate_01", "ARMTemplate_01\ARMTemplate_01.deployproj", "{6FFC3B01-EC50-4527-A2FA-CD344902B4D9}"
 EndProject
 Global
@@ -21,26 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5755AC75-0BC7-4AA2-9068-A23115A02C8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5755AC75-0BC7-4AA2-9068-A23115A02C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5755AC75-0BC7-4AA2-9068-A23115A02C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5755AC75-0BC7-4AA2-9068-A23115A02C8B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{10B60B19-6412-415B-8F57-29032C069360}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10B60B19-6412-415B-8F57-29032C069360}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10B60B19-6412-415B-8F57-29032C069360}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10B60B19-6412-415B-8F57-29032C069360}.Release|Any CPU.Build.0 = Release|Any CPU
-		{72FD651F-5DED-46D5-8D47-419AA7747778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72FD651F-5DED-46D5-8D47-419AA7747778}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72FD651F-5DED-46D5-8D47-419AA7747778}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72FD651F-5DED-46D5-8D47-419AA7747778}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D24E90D-790B-4172-BB6D-D0B2E1AE5623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D24E90D-790B-4172-BB6D-D0B2E1AE5623}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D24E90D-790B-4172-BB6D-D0B2E1AE5623}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D24E90D-790B-4172-BB6D-D0B2E1AE5623}.Release|Any CPU.Build.0 = Release|Any CPU
-		{600B4CB1-CF98-408D-BB0F-6388A44C87B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{600B4CB1-CF98-408D-BB0F-6388A44C87B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{600B4CB1-CF98-408D-BB0F-6388A44C87B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{600B4CB1-CF98-408D-BB0F-6388A44C87B7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6FFC3B01-EC50-4527-A2FA-CD344902B4D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6FFC3B01-EC50-4527-A2FA-CD344902B4D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FFC3B01-EC50-4527-A2FA-CD344902B4D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
