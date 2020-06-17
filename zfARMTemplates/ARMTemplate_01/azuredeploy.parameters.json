@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vm1Name": {
+      "value": "zfvm1"
+    },
+    "vm1AdminUserName": {
+      "value": "tfischer"
+    },
+    "vmpubipDnsName": {
+      "value": "zvdns1"
+    },
+    "vm1AdminPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/fd345958-eeb0-4c50-b589-28e0a8f886f0/resourceGroups/zfPremGlobal/providers/Microsoft.KeyVault/vaults/zfPremKVault"
+        },
+        "secretName": "vmAdminPassword"
+      }
+    }
+  }
+}
