@@ -1,0 +1,194 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "zfpremvmstorType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_ZRS",
+        "Standard_GRS",
+        "Standard_RAGRS",
+        "Premium_LRS"
+      ]
+    },
+    "zfazurevm01Name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "zfazurevm01AdminUserName": {
+      "type": "string"
+    },
+    "zfazurevm01AdminPassword": {
+      "type": "securestring"
+    },
+    "zfazurevm01WindowsOSVersion": {
+      "type": "string",
+      "defaultValue": "2012-R2-Datacenter",
+      "allowedValues": [
+        "2008-R2-SP1",
+        "2012-Datacenter",
+        "2012-R2-Datacenter",
+        "Windows-Server-Technical-Preview"
+      ]
+    },
+    "zfpubip01DnsName": {
+      "type": "string",
+      "minLength": 1
+    }},
+  "variables": {
+    "zfpremvmstorName": "[concat('zfpremvmstor', uniqueString(resourceGroup().id))]",
+    "zfvnet01Prefix": "10.0.0.0/16",
+    "zfvnet01Subnet1Name": "Subnet-1",
+    "zfvnet01Subnet1Prefix": "10.0.0.0/24",
+    "zfvnet01Subnet2Name": "Subnet-2",
+    "zfvnet01Subnet2Prefix": "10.0.1.0/24",
+    "zfazurevm01ImagePublisher": "MicrosoftWindowsServer",
+    "zfazurevm01ImageOffer": "WindowsServer",
+    "zfazurevm01OSDiskName": "zfazurevm01OSDisk",
+    "zfazurevm01VmSize": "Standard_D2_v2",
+    "zfazurevm01VnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'zfvnet01')]",
+    "zfazurevm01SubnetRef": "[concat(variables('zfazurevm01VnetID'), '/subnets/', variables('zfvnet01Subnet1Name'))]",
+    "zfazurevm01StorageAccountContainerName": "vhds",
+    "zfazurevm01NicName": "[concat(parameters('zfazurevm01Name'), 'NetworkInterface')]",
+    "zfpubip01Name": "zfpubip01"},
+  "resources": [
+    {
+      "name": "[variables('zfpremvmstorName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-01-01",
+      "sku": {
+        "name": "[parameters('zfpremvmstorType')]"
+      },
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "zfpremvmstor"
+      },
+      "kind": "Storage"
+    },
+    {
+      "name": "zfvnet01",
+      "type": "Microsoft.Network/virtualNetworks",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "zfvnet01"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('zfvnet01Prefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('zfvnet01Subnet1Name')]",
+            "properties": {
+              "addressPrefix": "[variables('zfvnet01Subnet1Prefix')]"
+            }
+          },
+          {
+            "name": "[variables('zfvnet01Subnet2Name')]",
+            "properties": {
+              "addressPrefix": "[variables('zfvnet01Subnet2Prefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('zfazurevm01NicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'zfvnet01')]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('zfpubip01Name'))]"
+      ],
+      "tags": {
+        "displayName": "zfazurevm01Nic"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('zfazurevm01SubnetRef')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('zfpubip01Name'))]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[parameters('zfazurevm01Name')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-06-15",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('zfpremvmstorName'))]",
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('zfazurevm01NicName'))]"
+      ],
+      "tags": {
+        "displayName": "zfazurevm01"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('zfazurevm01VmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('zfazurevm01Name')]",
+          "adminUsername": "[parameters('zfazurevm01AdminUsername')]",
+          "adminPassword": "[parameters('zfazurevm01AdminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('zfazurevm01ImagePublisher')]",
+            "offer": "[variables('zfazurevm01ImageOffer')]",
+            "sku": "[parameters('zfazurevm01WindowsOSVersion')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "zfazurevm01OSDisk",
+            "vhd": {
+              "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('zfpremvmstorName')), '2016-01-01').primaryEndpoints.blob, variables('zfazurevm01StorageAccountContainerName'), '/', variables('zfazurevm01OSDiskName'), '.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('zfazurevm01NicName'))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "[variables('zfpubip01Name')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "zfpubip01"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('zfpubip01DnsName')]"
+        }
+      }
+    }],
+  "outputs": {}
+}
