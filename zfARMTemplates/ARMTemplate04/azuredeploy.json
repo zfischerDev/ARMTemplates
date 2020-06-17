@@ -25,12 +25,15 @@
     },
     "zfazurevm01WindowsOSVersion": {
       "type": "string",
-      "defaultValue": "2012-R2-Datacenter",
+      "defaultValue": "2019-Datacenter",
       "allowedValues": [
         "2008-R2-SP1",
         "2012-Datacenter",
         "2012-R2-Datacenter",
-        "Windows-Server-Technical-Preview"
+        "2016-Nano-Server",
+        "2016-Datacenter-with-Containers",
+        "2016-Datacenter",
+        "2019-Datacenter"
       ]
     },
     "zfpubip01DnsName": {
