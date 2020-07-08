@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ARMTemplate_01", "ARMTemplate_01\ARMTemplate_01.deployproj", "{6FFC3B01-EC50-4527-A2FA-CD344902B4D9}"
 EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ARMVMCreation01", "ARMVMCreation01\ARMVMCreation01.deployproj", "{1282CE20-B998-45D0-9668-F04E8864A96B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6FFC3B01-EC50-4527-A2FA-CD344902B4D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FFC3B01-EC50-4527-A2FA-CD344902B4D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FFC3B01-EC50-4527-A2FA-CD344902B4D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1282CE20-B998-45D0-9668-F04E8864A96B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1282CE20-B998-45D0-9668-F04E8864A96B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1282CE20-B998-45D0-9668-F04E8864A96B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1282CE20-B998-45D0-9668-F04E8864A96B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
